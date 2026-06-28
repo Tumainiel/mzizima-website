@@ -1,0 +1,20 @@
+# Local Codex/workspace metadata
+.agents/
+.codex/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependency/build output that is not needed for this static site
+node_modules/
+dist/
+build/
+.next/
+
+# Logs and environment files
+*.log
+.env
+.env.*
+

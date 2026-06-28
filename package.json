@@ -1,0 +1,9 @@
+{
+  "name": "mzizima-estate-limited",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "python -m http.server 3002",
+    "start": "python -m http.server 3002"
+  }
+}
