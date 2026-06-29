@@ -1,0 +1,278 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMINISTRATOR
+  EDITOR
+  CONTENT_MANAGER
+  MARKETING
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  REPLIED
+  CLOSED
+  SPAM
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         UserRole   @default(EDITOR)
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+}
+
+model SiteSetting {
+  id              String   @id @default(cuid())
+  websiteName     String   @default("Mzizima Estate Limited")
+  companyName     String   @default("Mzizima Estate Limited")
+  parentCompany   String?  @default("STC Group Limited")
+  logoMediaId     String?
+  faviconMediaId  String?
+  primaryColor    String   @default("#081B33")
+  secondaryColor  String   @default("#C89B3C")
+  timezone        String   @default("Africa/Dar_es_Salaam")
+  currency        String   @default("TZS")
+  language        String   @default("en")
+  googleAnalytics String?
+  searchConsole   String?
+  facebookPixel   String?
+  updatedAt       DateTime @updatedAt
+}
+
+model ContactInfo {
+  id             String   @id @default(cuid())
+  phone          String   @default("+255 789 661 444")
+  whatsapp       String   @default("+255 789 661 444")
+  email          String   @default("info@mel.co.tz")
+  officeAddress  String   @default("Dar es Salaam, Magomeni, Majebere Street")
+  workingHours   String?
+  googleMapsUrl  String?
+  facebookUrl    String?
+  instagramUrl   String?
+  linkedInUrl    String?
+  xUrl           String?
+  youtubeUrl     String?
+  tiktokUrl      String?
+  updatedAt      DateTime @updatedAt
+}
+
+model Page {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  heading         String
+  content         Json
+  status          PublishStatus @default(DRAFT)
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+  canonicalUrl    String?
+  ogImageMediaId  String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  versions        PageVersion[]
+}
+
+model PageVersion {
+  id        String   @id @default(cuid())
+  pageId    String
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  content   Json
+  createdBy String?
+  createdAt DateTime @default(now())
+}
+
+model HomeSection {
+  id        String        @id @default(cuid())
+  key       String        @unique
+  title     String
+  content   Json
+  visible   Boolean       @default(true)
+  sortOrder Int           @default(0)
+  status    PublishStatus @default(PUBLISHED)
+  updatedAt DateTime      @updatedAt
+}
+
+model Property {
+  id                    String        @id @default(cuid())
+  slug                  String        @unique
+  name                  String
+  locationName          String
+  street                String
+  city                  String        @default("Dar es Salaam")
+  propertyType          String?
+  apartmentType         String?
+  numberOfUnits         Int
+  bedrooms              Int?
+  masterBedrooms        Int?
+  bathrooms             Int?
+  publicToilet          Boolean       @default(false)
+  kitchen               Boolean       @default(false)
+  sittingRoom           Boolean       @default(false)
+  balcony               Boolean       @default(false)
+  parking               Boolean       @default(false)
+  lift                  Boolean       @default(false)
+  cctv                  Boolean       @default(false)
+  electricalFence       Boolean       @default(false)
+  fence                 Boolean       @default(false)
+  securityGuards        Boolean       @default(false)
+  electricalFans        Boolean       @default(false)
+  waterAvailability     Boolean       @default(false)
+  electricityAvailability Boolean     @default(false)
+  description           String
+  amenities             Json?
+  statusLabel           String        @default("Unfurnished Apartment")
+  featured              Boolean       @default(false)
+  published             Boolean       @default(true)
+  archived              Boolean       @default(false)
+  tags                  String[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  media                 PropertyMedia[]
+  inquiries             Inquiry[]
+}
+
+model Feature {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  enabled   Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id          String          @id @default(cuid())
+  folder      String?
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  url         String
+  altText     String?
+  caption     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  properties  PropertyMedia[]
+  posts       Post[]
+  teamMembers TeamMember[]
+  testimonials Testimonial[]
+}
+
+model PropertyMedia {
+  id         String     @id @default(cuid())
+  propertyId String
+  mediaId    String
+  sortOrder  Int        @default(0)
+  property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  media      MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+}
+
+model Inquiry {
+  id              String        @id @default(cuid())
+  name            String
+  phone           String
+  email           String
+  preferredLocation String?
+  apartmentType   String?
+  message         String
+  status          InquiryStatus @default(NEW)
+  assignedTo      String?
+  propertyId      String?
+  property        Property?     @relation(fields: [propertyId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Post {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  type            String
+  title           String
+  excerpt         String?
+  content         Json
+  featuredImageId String?
+  featuredImage   MediaAsset?   @relation(fields: [featuredImageId], references: [id])
+  status          PublishStatus @default(DRAFT)
+  featured        Boolean       @default(false)
+  publishAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Testimonial {
+  id        String      @id @default(cuid())
+  name      String
+  role      String?
+  quote     String
+  rating    Int         @default(5)
+  photoId   String?
+  photo     MediaAsset? @relation(fields: [photoId], references: [id])
+  visible   Boolean     @default(true)
+  sortOrder Int         @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model TeamMember {
+  id        String      @id @default(cuid())
+  name      String
+  title     String
+  biography String?
+  email     String?
+  phone     String?
+  photoId   String?
+  photo     MediaAsset? @relation(fields: [photoId], references: [id])
+  socials   Json?
+  visible   Boolean     @default(true)
+  sortOrder Int         @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model GalleryAlbum {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  description String?
+  visible     Boolean       @default(true)
+  media       Json
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model AuditLog {
+  id            String   @id @default(cuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  action        String
+  entityType    String
+  entityId      String?
+  previousValue Json?
+  newValue      Json?
+  createdAt     DateTime @default(now())
+}
+
