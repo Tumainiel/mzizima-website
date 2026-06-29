@@ -69,9 +69,8 @@ If Node.js is not supported, there are two practical options:
 
 - Hosting decision: Next.js hosting or PHP/MySQL StackCP-compatible CMS.
 - Database type and credentials.
-- Admin email.
-- Initial admin password.
+- Admin email: `info@mel.co.tz`.
+- Initial admin password supplied by the owner during installation. Do not commit plaintext passwords to GitHub.
 - Upload storage location.
 - SMTP details for inquiry notifications.
 - Whether inquiries should be stored, emailed, or both.
-
