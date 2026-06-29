@@ -9,6 +9,35 @@ const routes = [
   { path: "/contact", label: "Contact" }
 ];
 
+const siteUrl = "https://mel.co.tz";
+
+const pageMeta = {
+  "/": {
+    title: "Mzizima Estate Limited | Apartments in Dar es Salaam",
+    description: "Mzizima Estate Limited offers unfurnished apartments in Dar es Salaam, including apartments in Mbweni and apartments in Magomeni under STC Group Limited."
+  },
+  "/about": {
+    title: "About Us | Mzizima Estate Limited",
+    description: "Learn about Mzizima Estate Limited, a Dar es Salaam real estate company and sister company under STC Group Limited."
+  },
+  "/properties": {
+    title: "Properties and Apartments | Mzizima Estate Limited",
+    description: "Compare unfurnished apartments in Dar es Salaam from Mzizima Estate Limited, including Mbweni and Magomeni two-bedroom and three-bedroom apartments."
+  },
+  "/mbweni": {
+    title: "Mbweni Apartments - Shyrose Bhanji Street | Mzizima Estate Limited",
+    description: "View Mbweni apartments on Shyrose Bhanji Street, including two-bedroom and three-bedroom unfurnished apartment options from Mzizima Estate Limited."
+  },
+  "/magomeni": {
+    title: "Magomeni Apartments - Majebere Street | Mzizima Estate Limited",
+    description: "View Magomeni apartments on Majebere Street with security, lift access, CCTV, parking, and unfurnished apartment options."
+  },
+  "/contact": {
+    title: "Contact Us | Mzizima Estate Limited",
+    description: "Contact Mzizima Estate Limited for apartment inquiries, viewing arrangements, and property information in Dar es Salaam."
+  }
+};
+
 const iconPaths = {
   arrow: "M5 12h14M13 5l7 7-7 7",
   balcony: "M4 10h16M6 10v9M18 10v9M8 14h8",
@@ -50,9 +79,9 @@ const locations = [
     imageClass: "mbweni-image",
     pagePath: "/mbweni",
     photos: [
-      "/src/assets/mbweni-apartments-1.png",
-      "/src/assets/mbweni-apartments-2.png",
-      "/src/assets/mbweni-apartments-3.png"
+      "/src/assets/mbweni-apartments-1.webp",
+      "/src/assets/mbweni-apartments-2.webp",
+      "/src/assets/mbweni-apartments-3.webp"
     ],
     description:
       "Mzizima Estate Limited owns 12 unfurnished apartments in Mbweni, located along Shyrose Bhanji Street. The property includes two-bedroom and three-bedroom apartment options with spacious layouts and essential residential features.",
@@ -344,7 +373,7 @@ function ContactPage() {
             ["mail", "Email address", "info@mel.co.tz"],
             ["map", "Office location", "Dar es Salaam, Magomeni, Majebere Street"]
           ].map(([icon, label, value]) => h("div", { key: label, className: "flex gap-4 border border-stone bg-mist p-5" }, h(Icon, { name: icon, className: "mt-1 h-6 w-6 shrink-0 text-gold" }), h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.14em] text-charcoal/50" }, label), h("p", { className: "mt-1 font-semibold text-navy" }, value))))),
-          h("a", { className: "mt-8 inline-flex items-center justify-center gap-2 border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:bg-white", href: "https://wa.me/255000000000" }, "WhatsApp Inquiry", h(Icon, { name: "arrow", className: "h-4 w-4" }))
+          h("a", { className: "mt-8 inline-flex items-center justify-center gap-2 border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:bg-white", href: "https://wa.me/255789661444" }, "WhatsApp Inquiry", h(Icon, { name: "arrow", className: "h-4 w-4" }))
         ),
         h(ContactForm)
       )
@@ -361,16 +390,33 @@ function ContactPage() {
 
 function ContactForm() {
   const inputClass = "border border-stone bg-white px-4 py-3 font-normal outline-none transition focus:border-gold";
-  return h("form", { className: "border border-stone bg-mist p-6 shadow-sm sm:p-8" },
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    const body = [
+      `Name: ${data.get("name")}`,
+      `Phone: ${data.get("phone")}`,
+      `Email: ${data.get("email")}`,
+      `Preferred location: ${data.get("location")}`,
+      `Apartment type: ${data.get("apartmentType")}`,
+      "",
+      `${data.get("message")}`
+    ].join("\n");
+    window.location.href = `mailto:info@mel.co.tz?subject=${encodeURIComponent("Apartment inquiry from website")}&body=${encodeURIComponent(body)}`;
+  };
+
+  return h("form", { onSubmit: handleSubmit, className: "border border-stone bg-mist p-6 shadow-sm sm:p-8" },
     h("div", { className: "grid gap-5 sm:grid-cols-2" },
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Name", h("input", { className: inputClass, placeholder: "Your full name" })),
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Phone number", h("input", { className: inputClass, placeholder: "+255..." })),
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Email", h("input", { type: "email", className: inputClass, placeholder: "you@example.com" })),
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Preferred location", h("select", { className: inputClass }, h("option", null, "Mbweni"), h("option", null, "Magomeni"))),
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy sm:col-span-2" }, "Apartment type", h("select", { className: inputClass }, h("option", null, "Two-bedroom"), h("option", null, "Three-bedroom"))),
-      h("label", { className: "grid gap-2 text-sm font-semibold text-navy sm:col-span-2" }, "Message", h("textarea", { className: `${inputClass} min-h-36`, placeholder: "Tell us what you would like to know." }))
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Name", h("input", { name: "name", required: true, autoComplete: "name", className: inputClass, placeholder: "Your full name" })),
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Phone number", h("input", { name: "phone", required: true, type: "tel", autoComplete: "tel", className: inputClass, placeholder: "+255..." })),
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Email", h("input", { name: "email", required: true, type: "email", autoComplete: "email", className: inputClass, placeholder: "you@example.com" })),
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy" }, "Preferred location", h("select", { name: "location", required: true, className: inputClass }, h("option", null, "Mbweni"), h("option", null, "Magomeni"))),
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy sm:col-span-2" }, "Apartment type", h("select", { name: "apartmentType", required: true, className: inputClass }, h("option", null, "Two-bedroom"), h("option", null, "Three-bedroom"))),
+      h("label", { className: "grid gap-2 text-sm font-semibold text-navy sm:col-span-2" }, "Message", h("textarea", { name: "message", required: true, className: `${inputClass} min-h-36`, placeholder: "Tell us what you would like to know." }))
     ),
-    h("button", { className: "mt-6 w-full border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white", type: "button" }, "Submit Inquiry")
+    h("button", { className: "mt-6 w-full border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white", type: "submit" }, "Submit Inquiry")
   );
 }
 
@@ -378,7 +424,7 @@ function CtaBand() {
   return h("section", { className: "bg-charcoal py-16 text-white" },
     h("div", { className: "mx-auto flex max-w-7xl flex-col gap-8 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between" },
       h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.18em] text-gold" }, "Inquiries and viewing arrangements"), h("h2", { className: "mt-3 max-w-3xl text-3xl font-semibold" }, "Speak with Mzizima Estate Limited about apartments in Dar es Salaam.")),
-      h("div", { className: "flex shrink-0 flex-col gap-3 sm:flex-row" }, h(LinkButton, { path: "/contact" }, "Contact Us"), h("a", { className: "inline-flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-navy", href: "https://wa.me/255000000000" }, "WhatsApp", h(Icon, { name: "arrow", className: "h-4 w-4" })))
+      h("div", { className: "flex shrink-0 flex-col gap-3 sm:flex-row" }, h(LinkButton, { path: "/contact" }, "Contact Us"), h("a", { className: "inline-flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-navy", href: "https://wa.me/255789661444" }, "WhatsApp", h(Icon, { name: "arrow", className: "h-4 w-4" })))
     )
   );
 }
@@ -390,22 +436,21 @@ function Footer() {
       h("div", null, h("p", { className: "font-semibold text-gold" }, "Navigation"), h("div", { className: "mt-4 grid gap-3 text-sm text-white/70" }, routes.slice(0, 4).map((item) => h("a", { key: item.path, href: item.path, className: "text-left hover:text-gold" }, item.label)))),
       h("div", null, h("p", { className: "font-semibold text-gold" }, "Contact"), h("div", { className: "mt-4 space-y-3 text-sm text-white/70" }, h("p", { className: "flex gap-3" }, h(Icon, { name: "phone", className: "h-4 w-4 text-gold" }), "+255 789 661 444"), h("p", { className: "flex gap-3" }, h(Icon, { name: "mail", className: "h-4 w-4 text-gold" }), "info@mel.co.tz"), h("p", { className: "flex gap-3" }, h(Icon, { name: "map", className: "h-4 w-4 text-gold" }), "Dar es Salaam, Magomeni, Majebere Street")))
     ),
-    h("div", { className: "border-t border-white/10 px-5 py-5 text-center text-sm text-white/50" }, "© 2026 Mzizima Estate Limited. All rights reserved.")
+    h("div", { className: "border-t border-white/10 px-5 py-5 text-center text-sm text-white/50" }, "(c) 2026 Mzizima Estate Limited. All rights reserved.")
   );
 }
 
 function App() {
   const path = normalizePath(window.location.pathname);
   useEffect(() => {
-    const titles = {
-      "/": "Mzizima Estate Limited | Apartments in Dar es Salaam",
-      "/about": "About Us | Mzizima Estate Limited",
-      "/properties": "Properties and Apartments | Mzizima Estate Limited",
-      "/mbweni": "Mbweni Apartments - Shyrose Bhanji Street | Mzizima Estate Limited",
-      "/magomeni": "Magomeni Apartments - Majebere Street | Mzizima Estate Limited",
-      "/contact": "Contact Us | Mzizima Estate Limited"
-    };
-    document.title = titles[path] || titles["/"];
+    const meta = pageMeta[path] || pageMeta["/"];
+    const canonicalPath = path === "/" ? "/" : `${path}/`;
+    document.title = meta.title;
+    setMeta("description", meta.description);
+    setMeta("og:title", meta.title, "property");
+    setMeta("og:description", meta.description, "property");
+    setMeta("og:url", `${siteUrl}${canonicalPath}`, "property");
+    setCanonical(`${siteUrl}${canonicalPath}`);
   }, [path]);
 
   let page = h(HomePage);
@@ -423,4 +468,24 @@ ReactDOM.createRoot(document.getElementById("root")).render(h(App));
 function normalizePath(pathname) {
   if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1);
   return pathname;
+}
+
+function setMeta(name, content, attr = "name") {
+  let tag = document.querySelector(`meta[${attr}="${name}"]`);
+  if (!tag) {
+    tag = document.createElement("meta");
+    tag.setAttribute(attr, name);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("content", content);
+}
+
+function setCanonical(href) {
+  let tag = document.querySelector('link[rel="canonical"]');
+  if (!tag) {
+    tag = document.createElement("link");
+    tag.setAttribute("rel", "canonical");
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("href", href);
 }

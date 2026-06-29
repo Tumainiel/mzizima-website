@@ -52,7 +52,7 @@ textarea {
 .mbweni-image {
   background-image:
     linear-gradient(180deg, rgba(8, 27, 51, 0.08), rgba(8, 27, 51, 0.64)),
-    url("/src/assets/mbweni-apartments-1.png");
+    url("/src/assets/mbweni-apartments-1.webp");
 }
 
 .magomeni-image {
