@@ -10,6 +10,7 @@ const routes = [
 ];
 
 const siteUrl = "https://mel.co.tz";
+const whatsappUrl = "https://wa.me/255789661444?text=Hello%20Mzizima%20Estate%20Limited%2C%20I%20would%20like%20to%20inquire%20about%20your%20apartments.";
 
 const pageMeta = {
   "/": {
@@ -373,7 +374,7 @@ function ContactPage() {
             ["mail", "Email address", "info@mel.co.tz"],
             ["map", "Office location", "Dar es Salaam, Magomeni, Majebere Street"]
           ].map(([icon, label, value]) => h("div", { key: label, className: "flex gap-4 border border-stone bg-mist p-5" }, h(Icon, { name: icon, className: "mt-1 h-6 w-6 shrink-0 text-gold" }), h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.14em] text-charcoal/50" }, label), h("p", { className: "mt-1 font-semibold text-navy" }, value))))),
-          h("a", { className: "mt-8 inline-flex items-center justify-center gap-2 border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:bg-white", href: "https://wa.me/255789661444" }, "WhatsApp Inquiry", h(Icon, { name: "arrow", className: "h-4 w-4" }))
+          h("a", { className: "mt-8 inline-flex items-center justify-center gap-2 border border-gold bg-gold px-6 py-3 font-semibold text-navy transition hover:bg-white", href: whatsappUrl, target: "_blank", rel: "noopener noreferrer" }, "WhatsApp Inquiry", h(Icon, { name: "arrow", className: "h-4 w-4" }))
         ),
         h(ContactForm)
       )
@@ -424,7 +425,7 @@ function CtaBand() {
   return h("section", { className: "bg-charcoal py-16 text-white" },
     h("div", { className: "mx-auto flex max-w-7xl flex-col gap-8 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between" },
       h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.18em] text-gold" }, "Inquiries and viewing arrangements"), h("h2", { className: "mt-3 max-w-3xl text-3xl font-semibold" }, "Speak with Mzizima Estate Limited about apartments in Dar es Salaam.")),
-      h("div", { className: "flex shrink-0 flex-col gap-3 sm:flex-row" }, h(LinkButton, { path: "/contact" }, "Contact Us"), h("a", { className: "inline-flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-navy", href: "https://wa.me/255789661444" }, "WhatsApp", h(Icon, { name: "arrow", className: "h-4 w-4" })))
+      h("div", { className: "flex shrink-0 flex-col gap-3 sm:flex-row" }, h(LinkButton, { path: "/contact" }, "Contact Us"), h("a", { className: "inline-flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-navy", href: whatsappUrl, target: "_blank", rel: "noopener noreferrer" }, "WhatsApp", h(Icon, { name: "arrow", className: "h-4 w-4" })))
     )
   );
 }
