@@ -12,6 +12,9 @@ const routes = [
 
 const siteUrl = "https://mel.co.tz";
 const whatsappUrl = "https://wa.me/255789661444?text=Hello%20Mzizima%20Estate%20Limited%2C%20I%20would%20like%20to%20inquire%20about%20your%20properties.";
+const officeMapQuery = "Dar es Salaam, Magomeni, Majebere Street";
+const officeMapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(officeMapQuery)}&output=embed`;
+const officeMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(officeMapQuery)}`;
 
 const pageMeta = {
   "/": {
@@ -486,8 +489,21 @@ function ContactPage() {
     ),
     h("section", { className: "bg-mist pb-20" },
       h("div", { className: "mx-auto max-w-7xl px-5 sm:px-8" },
-        h("div", { className: "map-placeholder flex min-h-[360px] items-center justify-center border border-stone text-center text-white" },
-          h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.18em] text-gold" }, "Google Map Embed Placeholder"), h("p", { className: "mt-3 text-2xl font-semibold" }, "Dar es Salaam, Magomeni, Majebere Street"))
+        h("div", { className: "overflow-hidden border border-stone bg-white shadow-sm" },
+          h("iframe", {
+            title: "Mzizima Estate Limited office location on Google Maps",
+            src: officeMapEmbedUrl,
+            className: "h-[420px] w-full",
+            loading: "lazy",
+            referrerPolicy: "no-referrer-when-downgrade"
+          }),
+          h("div", { className: "flex flex-col gap-4 border-t border-stone p-5 sm:flex-row sm:items-center sm:justify-between" },
+            h("div", null,
+              h("p", { className: "text-sm font-semibold uppercase tracking-[0.14em] text-gold" }, "Office location"),
+              h("p", { className: "mt-1 font-semibold text-navy" }, officeMapQuery)
+            ),
+            h("a", { className: "inline-flex items-center justify-center gap-2 border border-gold bg-gold px-5 py-3 font-semibold text-navy transition hover:bg-white", href: officeMapUrl, target: "_blank", rel: "noopener noreferrer" }, "Open in Google Maps", h(Icon, { name: "arrow", className: "h-4 w-4" }))
+          )
         )
       )
     )
