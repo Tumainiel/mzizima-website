@@ -6,7 +6,7 @@ const routes = [
   { path: "/properties", label: "Properties" },
   { path: "/mbweni", label: "Mbweni" },
   { path: "/magomeni", label: "Magomeni" },
-  { path: "/kariakoo-uhuru", label: "Kariakoo" },
+  { path: "/kariakoo", label: "Kariakoo" },
   { path: "/contact", label: "Contact" }
 ];
 
@@ -33,6 +33,10 @@ const pageMeta = {
   "/magomeni": {
     title: "Magomeni Apartments - Majebere Street | Mzizima Estate Limited",
     description: "View Magomeni apartments on Majebere Street with security, lift access, CCTV, parking, and unfurnished apartment options."
+  },
+  "/kariakoo": {
+    title: "Kariakoo Commercial Properties | Mzizima Estate Limited",
+    description: "View both Mzizima Estate Limited commercial rental properties in Kariakoo, located on Uhuru Street and Msimbazi Street."
   },
   "/kariakoo-uhuru": {
     title: "Kariakoo Uhuru Street Commercial Property | Mzizima Estate Limited",
@@ -166,6 +170,7 @@ const locations = [
     setupHeading: "Floor allocation",
     imageClass: "kariakoo-image",
     pagePath: "/kariakoo-uhuru",
+    ctaLabel: "Explore Uhuru Street",
     photos: [],
     description:
       "Mzizima Estate Limited owns a commercial property in Kariakoo, located along Uhuru Street. The building includes one basement and 12 floors, with shop rentals on the basement, ground floor, and first floor, store spaces from the 2nd to 11th floors, and offices on the 12th floor.",
@@ -193,6 +198,7 @@ const locations = [
     setupHeading: "Floor allocation",
     imageClass: "kariakoo-image",
     pagePath: "/kariakoo-msimbazi",
+    ctaLabel: "Explore Msimbazi Street",
     photos: [],
     description:
       "Mzizima Estate Limited owns a commercial property in Kariakoo, located along Msimbazi Street. The building includes one basement and 12 floors, with shop rentals on the basement, ground floor, and first floor, store spaces from the 2nd to 11th floors, and offices on the 12th floor.",
@@ -286,7 +292,7 @@ function LocationCard({ location }) {
           h("span", { className: "text-sm text-charcoal/60" }, apartment.bedrooms[0])
         )
       )),
-      h("div", { className: "mt-7" }, h(LinkButton, { path: location.pagePath }, `Explore ${location.name.split(" ")[0]}`))
+      h("div", { className: "mt-7" }, h(LinkButton, { path: location.pagePath }, location.ctaLabel || `Explore ${location.name.split(" ")[0]}`))
     )
   );
 }
@@ -397,6 +403,28 @@ function PropertiesPage() {
           h("button", { key: value, type: "button", onClick: () => setActive(value), className: `border px-4 py-3 text-sm font-semibold transition ${active === value ? "border-navy bg-navy text-white" : "border-stone bg-white text-charcoal hover:border-gold hover:text-navy"}` }, label)
         )),
         h("div", { className: "mt-8 grid gap-6" }, shown.map((apartment) => h(PropertyCard, { key: apartment.id, apartment })))
+      )
+    )
+  );
+}
+
+function KariakooPage() {
+  const kariakooLocations = locations.filter((location) => location.slug.startsWith("kariakoo"));
+
+  return h("main", { className: "route-fade" },
+    h(PageHero, {
+      eyebrow: "Kariakoo commercial properties",
+      title: "Two commercial rental properties in Kariakoo",
+      text: "Mzizima Estate Limited owns commercial rental properties on Uhuru Street and Msimbazi Street in Kariakoo. Each building includes shop rentals, store floors, and office space."
+    }),
+    h("section", { className: "bg-mist py-20" },
+      h("div", { className: "mx-auto max-w-7xl px-5 sm:px-8" },
+        h(SectionHeading, {
+          eyebrow: "Kariakoo",
+          title: "Choose a Kariakoo property",
+          text: "Both commercial buildings include one basement and 12 floors, with shops from basement to first floor, stores from 2nd to 11th floor, and offices on the 12th floor."
+        }),
+        h("div", { className: "mt-10 grid gap-7 lg:grid-cols-2" }, kariakooLocations.map((location) => h(LocationCard, { key: location.slug, location })))
       )
     )
   );
@@ -534,6 +562,7 @@ function App() {
   let page = h(HomePage);
   if (path === "/about") page = h(AboutPage);
   if (path === "/properties") page = h(PropertiesPage);
+  if (path === "/kariakoo") page = h(KariakooPage);
   const detailLocation = locations.find((location) => path === location.pagePath);
   if (detailLocation) page = h(ApartmentDetailPage, { location: detailLocation });
   if (path === "/contact") page = h(ContactPage);
