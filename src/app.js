@@ -433,6 +433,33 @@ function KariakooPage() {
   );
 }
 
+function PropertyMapSection({ location }) {
+  const query = `${location.street}, ${location.city}, Tanzania`;
+  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+  return h("section", { className: "bg-mist pb-20" },
+    h("div", { className: "mx-auto max-w-7xl px-5 sm:px-8" },
+      h("div", { className: "overflow-hidden border border-stone bg-white shadow-sm" },
+        h("iframe", {
+          title: `${location.name} location on Google Maps`,
+          src: embedUrl,
+          className: "h-[420px] w-full",
+          loading: "lazy",
+          referrerPolicy: "no-referrer-when-downgrade"
+        }),
+        h("div", { className: "flex flex-col gap-4 border-t border-stone p-5 sm:flex-row sm:items-center sm:justify-between" },
+          h("div", null,
+            h("p", { className: "text-sm font-semibold uppercase tracking-[0.14em] text-gold" }, "Property location"),
+            h("p", { className: "mt-1 font-semibold text-navy" }, query)
+          ),
+          h("a", { className: "inline-flex items-center justify-center gap-2 border border-gold bg-gold px-5 py-3 font-semibold text-navy transition hover:bg-white", href: mapUrl, target: "_blank", rel: "noopener noreferrer" }, "Open in Google Maps", h(Icon, { name: "arrow", className: "h-4 w-4" }))
+        )
+      )
+    )
+  );
+}
+
 function ApartmentDetailPage({ location }) {
   return h("main", { className: "route-fade" },
     h(PageHero, { eyebrow: location.name, title: `${location.name} - ${location.street.split(",")[0]}`, text: location.description }),
@@ -465,7 +492,8 @@ function ApartmentDetailPage({ location }) {
           ))
         )
       )
-    )
+    ),
+    h(PropertyMapSection, { location })
   );
 }
 
