@@ -63,8 +63,8 @@ model SiteSetting {
 
 model ContactInfo {
   id             String   @id @default(cuid())
-  phone          String   @default("+255 789 661 444")
-  whatsapp       String   @default("+255 789 661 444")
+  phone          String   @default("+255 737 326 352")
+  whatsapp       String   @default("+255 737 326 352")
   email          String   @default("info@mel.co.tz")
   officeAddress  String   @default("Dar es Salaam, Magomeni, Majebere Street")
   workingHours   String?
@@ -275,4 +275,3 @@ model AuditLog {
   newValue      Json?
   createdAt     DateTime @default(now())
 }
-

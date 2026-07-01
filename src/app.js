@@ -11,7 +11,7 @@ const routes = [
 ];
 
 const siteUrl = "https://mel.co.tz";
-const whatsappUrl = "https://wa.me/255789661444?text=Hello%20Mzizima%20Estate%20Limited%2C%20I%20would%20like%20to%20inquire%20about%20your%20properties.";
+const whatsappUrl = "https://wa.me/255737326352?text=Hello%20Mzizima%20Estate%20Limited%2C%20I%20would%20like%20to%20inquire%20about%20your%20properties.";
 const officeMapQuery = "Dar es Salaam, Magomeni, Majebere Street";
 const officeMapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(officeMapQuery)}&output=embed`;
 const officeMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(officeMapQuery)}`;
@@ -478,7 +478,7 @@ function ContactPage() {
           h("h2", { className: "text-3xl font-semibold text-navy" }, "Reach our property team"),
           h("p", { className: "mt-4 leading-7 text-charcoal/70" }, "Share your preferred location and property type. Our team can assist with inquiries for apartments in Mbweni and Magomeni, plus commercial rentals in Kariakoo."),
           h("div", { className: "mt-8 space-y-4" }, [
-            ["phone", "Phone number", "+255 789 661 444"],
+            ["phone", "Phone number", "+255 737 326 352"],
             ["mail", "Email address", "info@mel.co.tz"],
             ["map", "Office location", "Dar es Salaam, Magomeni, Majebere Street"]
           ].map(([icon, label, value]) => h("div", { key: label, className: "flex gap-4 border border-stone bg-mist p-5" }, h(Icon, { name: icon, className: "mt-1 h-6 w-6 shrink-0 text-gold" }), h("div", null, h("p", { className: "text-sm font-semibold uppercase tracking-[0.14em] text-charcoal/50" }, label), h("p", { className: "mt-1 font-semibold text-navy" }, value))))),
@@ -556,7 +556,7 @@ function Footer() {
     h("div", { className: "mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr]" },
       h("div", null, h("div", { className: "flex items-center gap-3" }, h("img", { src: "/src/assets/mzizima-logo-horizontal.png?v=2", alt: "Mzizima Estate Limited", className: "h-16 w-auto object-contain" }), h("div", null, h("p", { className: "font-semibold" }, "Mzizima Estate Limited"), h("p", { className: "text-sm text-white/55" }, "Sister company of STC Group Limited"))), h("p", { className: "mt-6 max-w-md leading-7 text-white/66" }, "A real estate company in Tanzania offering unfurnished apartments and commercial rental properties across Dar es Salaam.")),
       h("div", null, h("p", { className: "font-semibold text-gold" }, "Navigation"), h("div", { className: "mt-4 grid gap-3 text-sm text-white/70" }, routes.slice(0, 4).map((item) => h("a", { key: item.path, href: item.path, className: "text-left hover:text-gold" }, item.label)))),
-      h("div", null, h("p", { className: "font-semibold text-gold" }, "Contact"), h("div", { className: "mt-4 space-y-3 text-sm text-white/70" }, h("p", { className: "flex gap-3" }, h(Icon, { name: "phone", className: "h-4 w-4 text-gold" }), "+255 789 661 444"), h("p", { className: "flex gap-3" }, h(Icon, { name: "mail", className: "h-4 w-4 text-gold" }), "info@mel.co.tz"), h("p", { className: "flex gap-3" }, h(Icon, { name: "map", className: "h-4 w-4 text-gold" }), "Dar es Salaam, Magomeni, Majebere Street")))
+      h("div", null, h("p", { className: "font-semibold text-gold" }, "Contact"), h("div", { className: "mt-4 space-y-3 text-sm text-white/70" }, h("p", { className: "flex gap-3" }, h(Icon, { name: "phone", className: "h-4 w-4 text-gold" }), "+255 737 326 352"), h("p", { className: "flex gap-3" }, h(Icon, { name: "mail", className: "h-4 w-4 text-gold" }), "info@mel.co.tz"), h("p", { className: "flex gap-3" }, h(Icon, { name: "map", className: "h-4 w-4 text-gold" }), "Dar es Salaam, Magomeni, Majebere Street")))
     ),
     h("div", { className: "border-t border-white/10 px-5 py-5 text-center text-sm text-white/50" }, "(c) 2026 Mzizima Estate Limited. All rights reserved.")
   );
